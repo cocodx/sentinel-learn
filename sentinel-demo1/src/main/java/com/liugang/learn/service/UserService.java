@@ -3,8 +3,13 @@ package com.liugang.learn.service;
 import com.alibaba.csp.sentinel.Entry;
 import com.alibaba.csp.sentinel.SphU;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
+import com.alibaba.csp.sentinel.slots.block.RuleConstant;
+import com.alibaba.csp.sentinel.slots.block.flow.FlowRule;
+import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
 import com.liugang.learn.model.User;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
 
 /**
  * 对getUser 进行限流
@@ -14,6 +19,23 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     public static final String USER_RES="userResource";
+
+    public UserService(){
+        //定义热点限流的规则，对第一个参数设置qps限流模式，阈值为5
+        FlowRule rule = new FlowRule();
+        rule.setResource(USER_RES);
+        //限流类型qps
+        rule.setGrade(RuleConstant.FLOW_GRADE_QPS);
+        //设置阈值
+        rule.setCount(5);
+        //设置哪个调用方
+        rule.setLimitApp(RuleConstant.LIMIT_APP_DEFAULT);
+        //基于调用关系的流量控制
+        rule.setStrategy(RuleConstant.CONTROL_BEHAVIOR_DEFAULT);
+        // 流控策略
+        rule.setControlBehavior(RuleConstant.CONTROL_BEHAVIOR_DEFAULT);
+        FlowRuleManager.loadRules(Collections.singletonList(rule));
+    }
 
     public User getUser(Long uid){
         Entry entry = null;

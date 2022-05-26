@@ -16,6 +16,11 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    /**
+     * 现在用500个线程数，10秒跑完，去测试流控规则
+     * @param uid
+     * @return
+     */
     @GetMapping("/getUser")
     @ResponseBody
     public User getUser(@RequestParam("uid")Long uid){
