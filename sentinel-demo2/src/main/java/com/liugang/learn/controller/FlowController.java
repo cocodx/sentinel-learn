@@ -6,11 +6,13 @@ import com.alibaba.csp.sentinel.SphU;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class FlowController {
 
     @GetMapping("/testSentinel")
+    @ResponseBody
     public String testSentinel1(){
         String resourceName = "testSentinel1";
         String retVal;
