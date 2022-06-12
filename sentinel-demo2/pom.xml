@@ -44,6 +44,12 @@
             <artifactId>sentinel-transport-simple-http</artifactId>
             <version>1.8.4</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-annotation-aspectj</artifactId>
+            <version>1.8.4</version>
+        </dependency>
     </dependencies>
 
 </project>

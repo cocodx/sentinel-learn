@@ -9,6 +9,7 @@ import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
 import com.liugang.learn.model.User;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.Collections;
 
 /**
@@ -20,14 +21,15 @@ public class UserService {
 
     public static final String USER_RES="userResource";
 
-    public UserService(){
+    @PostConstruct
+    public void initUserService(){
         //定义热点限流的规则，对第一个参数设置qps限流模式，阈值为5
         FlowRule rule = new FlowRule();
         rule.setResource(USER_RES);
         //限流类型qps
         rule.setGrade(RuleConstant.FLOW_GRADE_QPS);
-        //设置阈值
-        rule.setCount(5);
+        //设置阈值,每秒最多通过的请求个数
+        rule.setCount(2);
         //设置哪个调用方
         rule.setLimitApp(RuleConstant.LIMIT_APP_DEFAULT);
         //基于调用关系的流量控制
@@ -37,7 +39,7 @@ public class UserService {
         FlowRuleManager.loadRules(Collections.singletonList(rule));
     }
 
-    public User getUser(Long uid){
+    public Object getUser(Long uid){
         Entry entry = null;
         try{
             //流控代码
@@ -50,11 +52,11 @@ public class UserService {
         }catch (BlockException e){
             //被限流了
             System.out.println("[getUser] has been protected! Time="+System.currentTimeMillis());
+            return "系统繁忙，请稍后！"; //降低处理
         }finally {
             if (entry!=null){
                 entry.exit();
             }
         }
-        return null;
     }
 }

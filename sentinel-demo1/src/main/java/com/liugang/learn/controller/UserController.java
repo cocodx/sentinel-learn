@@ -23,7 +23,7 @@ public class UserController {
      */
     @GetMapping("/getUser")
     @ResponseBody
-    public User getUser(@RequestParam("uid")Long uid){
+    public Object getUser(@RequestParam("uid")Long uid){
         return userService.getUser(uid);
     }
 }
